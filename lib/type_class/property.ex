@@ -16,8 +16,10 @@ defmodule TypeClass.Property do
   end
 
   @doc "Run all properties for the type class"
-  @spec run!(module(), module(), atom(), non_neg_integer()) :: no_return()
-  def run!(datatype, class, prop_name, times \\ 100) do
+  @spec run!(module(), module(), atom(), non_neg_integer() | nil) :: no_return()
+  def run!(datatype, class, prop_name, times \\ nil) do
+    times = if !times, do: Application.get_env(:type_class, :checks, 100), else: times
+
     property_module = Module.concat(class, Property)
     custom_generator = Module.concat([class, "Proto", datatype]).__custom_generator__()
 

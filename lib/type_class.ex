@@ -251,6 +251,14 @@ defmodule TypeClass do
       end
 
       cond do
+        Application.get_env(:type_class, :disable_prop_check, false) ->
+          IO.warn("""
+          All property checks was disabled in config
+
+          For more, please see the TypeClass README:
+          https://github.com/expede/type_class/blob/master/README.md
+          """)
+
         unquote(class).__force_type_class__() ->
           IO.warn("""
           The type class #{unquote(class)} has been forced to bypass \
